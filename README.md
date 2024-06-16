@@ -4,6 +4,8 @@ Questo software è realizzato in Java ed è un progetto per due esami. Si suddiv
 
 Questa app è stata progettata per gestire delle wiki. La traccia sarà nella repository.
 
+Traccia 2
+
 # Inglese
 This software is developed in Java and is a project for two exams. It is divided into a Database part and an Object-Oriented (Application Software) part.
 
