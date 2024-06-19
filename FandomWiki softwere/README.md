@@ -43,3 +43,6 @@ versione Orcale Open JDK 21
 raffaele.raia@studenti.unina.it
 
 fl.zecconi@studenti.unina.it
+
+##Se non funziona
+Se non funzionasse il programma potrebbe essere che il DB non è piu online.
