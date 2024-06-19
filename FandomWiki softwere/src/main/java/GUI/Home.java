@@ -80,6 +80,7 @@ public class Home {
                 loginbutton.setBackground(frame.getColorToolBar());
                 frame.Resize(700, 850);
 
+
             }
         });
 
@@ -88,7 +89,6 @@ public class Home {
             public void mouseEntered(MouseEvent e) {
                 super.mouseEntered(e);
                 loginbutton.setBackground(new Color(199, 111, 91));
-
 
             }
 
@@ -147,7 +147,6 @@ public class Home {
             }
         });
 
-
         /*
         IconaLente.addMouseListener(new MouseAdapter() {
             @Override
@@ -157,6 +156,13 @@ public class Home {
             }
         });
         */
+
+        try{
+            controller.CheckConnection();
+        }catch (Exception e2){
+            JOptionPane.showMessageDialog(frame, e2.getMessage(), "Errore DataBase",JOptionPane.INFORMATION_MESSAGE);
+        }
+
     }
 
     public JPanel getPanel() {

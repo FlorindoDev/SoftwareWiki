@@ -1,9 +1,12 @@
 package main.java.Controller;
 
+import main.java.Database.ConnessionePostges;
 import main.java.ImplementazionePostgresDAO.*;
 import main.java.Model.*;
 
 import javax.swing.*;
+import java.security.spec.ECField;
+import java.sql.Connection;
 import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.util.ArrayList;
@@ -48,8 +51,22 @@ public class Controller {
         } catch (SQLException e) {
             System.out.println(e.getMessage());
             return false;
+        }catch (Exception e){
+            System.out.println("Errore con è null");
+            return false;
         }
 
+
+    }
+
+    /**
+     * Controlliamo se la connessione al db è presente
+     * Lancia eccezzione se non è presente
+     */
+    public void CheckConnection() throws Exception {
+        Connection con = new ConnessionePostges().openConnection();
+        if(con == null) throw new Exception("Errore di connessione al database. Tutte le azioni future potrebbero essere compromesse.");
+        con.close();
     }
 
     /**
@@ -62,7 +79,11 @@ public class Controller {
             return new PaginaPostgresDAO().SearchPage(ricerca);
         } catch (SQLException e) {
             return null;
+        }catch (Exception e){
+            System.out.println("Errore con è null");
+            return null;
         }
+
 
     }
 
