@@ -10,7 +10,7 @@ Florindo Zecconi N86004544
 
 ## Getting Started
 
-Download links:
+Download links Solo se è necessario poiche sono versioni non aggiornate:
 
 SSH clone URL: ssh://git@git.jetbrains.space/r4ff4space/main/ProgettoOO.git
 
