@@ -33,7 +33,7 @@ hostname
 user
 password
 ```
-Versione Orcale Open JDK:
+Versione Oracale Open JDK:
 ```
 versione Orcale Open JDK 21 
 ```
