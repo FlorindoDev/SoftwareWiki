@@ -33,6 +33,10 @@ hostname
 user
 password
 ```
+Versione JDK:
+```
+versione 21 JDK
+```
 
 ## Contact us
 
