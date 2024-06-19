@@ -33,9 +33,9 @@ hostname
 user
 password
 ```
-Versione JDK:
+Versione Orcale Open JDK:
 ```
-versione 21 JDK
+versione Orcale Open JDK 21 
 ```
 
 ## Contact us
