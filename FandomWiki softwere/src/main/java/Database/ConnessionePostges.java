@@ -15,7 +15,7 @@ public class ConnessionePostges {
     public Connection openConnection() {
 
         ArrayList<String> Credenziali = new ArrayList<>();
-        String filePath = "src\\main\\java\\Database\\credenziali.txt";
+        String filePath = "src/main/java/Database/credenziali.txt";
         File file = new File(filePath);
 
         try {
