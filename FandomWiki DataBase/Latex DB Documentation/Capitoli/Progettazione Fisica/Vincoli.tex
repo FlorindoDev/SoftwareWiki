@@ -1,0 +1,71 @@
+Identifichiamo in questa sezione i vincoli legati al nostro dominio
+
+\subsubsection{Vincoli di Domino}
+\begin{itemize}
+
+    \item {
+        \textbf{d\_Email} è un dominio che controlla se un email è valida o  meno. Questo dominio non è totale, ci potrebbero essere altri problemi come; doppia chioccola o doppio punto. L'Email dovrà essere comunque controllata, tutta via questo check eviterà lavoro superfluo al trigger che avrà il compito di controllare Email al momento del inserimento\newline
+        \lstinputlisting{Capitoli/Progettazione Fisica/domini.sql}
+    }
+    \item {\textbf{CheckGenere} Limita il campo dei VARCHAR a due solo valori 'F' o 'M', creando un dominio formato solo da 'F' o 'M'}
+    
+    
+\end{itemize}
+
+\subsubsection{Vincoli sui valori NULL e valori predefiniti}
+\begin{itemize}
+    \item{Tutti i valori non possono essere NULL escludendo:
+        \begin{itemize}
+            \item{\textbf{dataA} data Accettazione o Rifiuto dell'operazione}
+            \item{\textbf{LINKPAGINA} cioè il riferimento a una pagina tramite un link}
+            \item{\textbf{posizione\_frase} è il riferimento alla frase in operazione utente. quest'ultimo può essere null poiché quando faremo una richiesta di inserimento la frase non esiste}
+            \item{\textbf{posizioneIns} è la posizione di inserimento della frase, se L'operazione è una modifica questo valore sarà NULL}
+        \end{itemize}
+    }
+    \item{Non ci sono valori Default}
+\end{itemize}
+
+\subsubsection{Identificazione vincoli intrarelazionali}
+
+\textbf{Vincoli di Chiave:}
+\begin{itemize}
+    \item {Sono tutte le chiavi primarie nelle rispettive relazioni.}\newline
+\end{itemize}
+\textbf{Vincoli di Tupla:}
+\begin{itemize}
+    \item {se l'attributo \textit{"link"} in \textit{"Operazione Utente"} e in \textit{"Operazione Autore"} è impostato a \textit{True} allora \textit{"link\_pagina"} non dovrà essere NULL (costrain di nome \textbf{CheckLink})}
+    
+\end{itemize}
+
+\subsubsection{Identificazione vincoli interrelazionali}
+\textbf{Vincoli di integrità referenziale:}
+\begin{itemize}
+
+    \item {Se la Chiave primaria di una \textit{"pagina"} viene modificata allora anche i riferimenti devono essere aggiornati}
+    \item {Se la Chiave primaria di un'\textit{"utente"} viene modificata allora anche i riferimenti devono essere aggiornati}
+    \item {Se un \textit{"link"} fa riferimento ad una \textit{"pagina eliminata"}, allora il link non deve contenere nessun riferimento (NULL)}
+    \item {Quando viene eliminata una \textit{"pagina"}, deve essere eliminato tutto il suo contenuto (Frasi), le sue occorrenze e le occorrenze del contenuto (Operazioni Utente e Autore)}\newline
+\end{itemize}
+\textbf{Vincoli di integrità semantica:}
+\begin{itemize}
+    
+    \item {Se l'attributo\textit{"visionata"} in \textit{"Operazione Utente"} è impostato a \textit{True} allora l'utente non potrà modificare quella proposta. \hyperlink{Modificaproposta}{\textbf{Clica qui}}}\newline
+    
+    \item {Un \textit{"Utente"} non può essere cancellato.  \hyperlink{UtenteNoDelete}{\textbf{Clica qui}}}\newline
+    
+    \item {Un \textit{"Utente"} Diventa autore se crea una pagina. \hyperlink{SwitchAutore}{\textbf{Clica qui}}}\newline
+
+    \item {Un \textit{"Autore"} Diventa Utente se non ha più nessuna pagina. \hyperlink{SwitchUtente}{\textbf{Clica qui}}}\newline
+    
+    \item { In \textit{"Pagina"} deve essere aggiornato il valore di Generalità\_autore in caso di modifica delle generalità dell'autore. \hyperlink{AggiornamentoGeneralitaPagina}{\textbf{Clica qui}}}\newline
+    
+    \item {La \textit{"DataR"} deve combaciare sempre con l'ultima Data di modifica del testo. \hyperlink{ModificaDataMod}{\textbf{Clica qui}}}\newline
+    
+    \item {Una \textit{"Pagina"} non può essere vuota.  \hyperlink{CreazionePagina}{\textbf{Clica qui}}}\newline
+
+    \item {\textit{"DataUltimaModifica"} in "Pagina" deve essere aggiornata quando viene aggiunta o modificata una frase nella pagina. \hyperlink{DataModficaPagina}{\textbf{Clica qui}}}\newline
+    
+    \item {Le azioni dell'autore sono registrate in \textit{Operazione\_autore}. \hyperlink{OperazioneAutoreIntegritaMod}{\textbf{Clica qui}} e  \hyperlink{OperazioneAutoreIntegritaIns}{\textbf{Clica qui}}}\newline
+    
+    \item {Le azioni dell'utente sono registrate in \textit{Operazione\_utente}. \hyperlink{OperazioneUtenteRichiesta}{\textbf{Clica qui}}}
+\end{itemize}

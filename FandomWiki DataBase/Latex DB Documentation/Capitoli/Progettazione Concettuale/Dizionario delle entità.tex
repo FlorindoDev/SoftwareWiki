@@ -1,0 +1,133 @@
+% Definizione di una nuova colonna per gli attributi con testo allineato a sinistra
+%tabella associazioni
+\newcolumntype{L}{>{\raggedright\arraybackslash}p{5cm}}
+
+\begin{longtable}{|p{2.5cm}|p{6cm}|L|}
+
+\hline
+\textbf{Entità} & \textbf{Descrizione} & \textbf{Attributi} \\
+\hline
+
+\endfirsthead
+\multicolumn{3}{c}{} \\
+\hline
+\textbf{Entità} & \textbf{Descrizione} & \textbf{Attributi} \\
+\hline
+\endhead
+
+Utente & 
+\textit{Utente} generico del sistema che può 
+essere anche un autore di una pagina wiki &
+\textbf{Nome}(String): Nome dell'utente \newline
+\textbf{Cognome}(String): Cognome dell'utente \newline
+\textbf{Email}(string): Email dell'utente \newline
+\textbf{Password}(string): Password dell'utente \newline
+\textbf{Genere}(Char): genere dell'utente
+\\
+
+\hline
+Autore & \textit{Specializzazione di Utente}. Questa entità sta ad indicare il fatto che un \textit{utente} può anche creare delle \textit{pagine wiki} &
+\\
+
+\hline
+Pagina & L'entità pagina si riferisce alla \textit{pagina wiki} creata da un \textit{utente-autore} &
+\textbf{Generalità autore}(String): Stringa composta dalle generalità  dell'autore della pagina \newline
+\textbf{Titolo}(String): Indica il titolo della pagina \newline
+\textbf{Data ultima modifica}(DateTime): Indica la data in cui è stata effettuata l'ultima modifica accettata sulla pagina
+\\
+
+\hline
+Frase & Frase è un elemento essenziale della pagina, perché una o più frasi
+formano il testo della pagina &
+\textbf{Testo}(String): Indica il contenuto testuale della frase \newline
+\textbf{Posizione}(Int): Indica la posizione numerica all'interno della pagina
+\\
+
+\hline
+Link & Link è una specializzazione della frase, ovvero una frase può essere un link
+e riferirsi ad un altra pagina & \\
+
+\hline
+Operazione utente& 
+Operazione utente è un entità \textit{Superclasse} che tiene traccia di tutte gli inserimenti e modifiche apportate, alle frasi di una pagina, dagli utenti, che esse siano accettate oppure no dall'autore della pagina &
+\textbf{DataA}(DateTime): Data in cui è stata accattata o rifiutata la modifica o inserimento dall'autore \newline
+\textbf{DataR}(DateTime): Data in cui è stata proposta la modifica o inserimento \newline
+\textbf{Testo}(String): Contiene il testo inserito dall'utente \newline
+\textbf{Accettata}(Boolean): Indica se l'operazione proposta è stata accettata (1), rifiutata (0) dall'autore \newline
+\textbf{Visionata}(Boolean): Questo attributo indica se l'autore ha visionato l'operazione\\
+
+\hline
+Inserimento utente & 
+Inserimento è una \textit{specializzazione} dell'entità \textit{operazione utente}, ovvero un utente ha la possibilità di proporre una nuova frase & 
+\textbf{Posizione}(Int): Posizione numerica specificata dall'utente al momento dell'inserimento di una nuova frase\\
+
+\hline
+Modifica utente & 
+Modifica utente è una \textit{specializzazione} dell'entità \textit{operazione utente}, ovvero un utente ha la possibilità di modificare una frase & \\
+
+\hline
+Operazione autore & 
+Operazione autore è un entità \textit{Superclasse} che tiene traccia di tutte gli inserimenti e modifiche apportate, alle frasi di una pagina da parte dell'autore &
+\textbf{Data}(DateTime): Data in cui è stata apportata la modifica o inserimento \newline
+\textbf{Testo}(String): Contiene il testo inserito dall'autore\\
+
+\hline
+Inserimento autore & 
+Inserimento è una \textit{specializzazione} dell'entità \textit{operazione autore}, ovvero l'autore ha la possibilità di inserire direttamente una nuova frase & 
+\textbf{Posizione}(Int): Posizione numerica specificata dall'autore al momento dell'inserimento di una nuova frase\\
+
+\hline
+Modifica autore & 
+Modifica autore è una \textit{specializzazione} dell'entità \textit{operazione autore}, ovvero l'autore ha la possibilità di modificare direttamente una frase & \\
+
+\hline
+\end{longtable}
+
+
+\vspace{12pt}
+
+\newpage
+%tabella associazioni
+\begin{comment}
+\begin{longtable}{|p{2.5cm}|p{6cm}|L|}
+
+\hline
+\textbf{Associazioni} & \textbf{Descrizione} & \textbf{Attributi}\\
+\hline
+
+\endfirsthead
+\multicolumn{3}{c}{} \\
+\hline
+\textbf{Associazioni} & \textbf{Descrizione} & \textbf{Attributi}\\
+\hline
+\endhead
+
+Crea &  
+Associazione \textbf{Uno-a-Molti} tra \textit{Pagina} e \textit{Autore}. Questa classe-associazione è utilizzata per memorizzare dati utili inerenti alla creazione della pagina. & 
+\textbf{Data}(DateTime): Questo attributo si riferisce alla data di creazione della pagina wiki\\
+
+\hline
+Aggiunge & 
+Associazione \textbf{Uno-a-Uno} tra \textit{Frase} e \textit{Inserimento utente}. Una farse può avere uno o zero inserimenti da parte del utente un'inserimento aggiunge una sola frase.
+&\\
+
+\hline
+Cambia & 
+Associazione \textbf{Molti-a-Uno} tra \textit{Frase} e \textit{Modifica utente}. Una frase può essere modificata zero o più volte. Una modifica può modificare solo una frase.
+&\\
+
+\hline
+Si riferisce &
+Associazione \textbf{Uno-a-Molti} tra \textit{Link} e \textit{Pagina}. Questa associazione si riferisce al fatto che una frase (link) è collegata/contiene il collegamento ad un altra pagina wiki.&\\
+
+\hline
+Notificato &
+Associazione \textbf{Uno-a-Molti} tra \textit{Operazione} e \textit{Autore}. Questa associazione si riferisce al fatto che un'autore visualizza le modifiche proposte alla sua pagina wiki. Una modifica verrà quindi visualizzata da un autore, ma l'autore visualizzerà tutte le modifiche inerenti alla sua pagina.&\\
+
+\hline
+Effettua&  
+Associazione \textbf{Uno-a-Molti} tra \textit{Operazione} e \textit{Utente}. Questa associazione si riferisce al fatto che un utente ha la possibilità di proporre una frase alla pagina wiki. Un utente quindi può proporre nessuna o tante operazioni su una pagina, mentre un'operazione specifica di un utente è effettuata da un solo utente& \\
+
+\hline
+\end{longtable}
+\end{comment}

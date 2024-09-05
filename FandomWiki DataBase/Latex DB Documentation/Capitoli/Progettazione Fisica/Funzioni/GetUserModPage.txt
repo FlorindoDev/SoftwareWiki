@@ -1,0 +1,30 @@
+CREATE OR REPLACE FUNCTION GetUserModPage(emailIn IN VARCHAR(255), paginaIn IN INTEGER)
+RETURNS TEXT
+AS $GetUserModPage$
+DECLARE
+    ListaUtenti TEXT := '';
+	Flag bit(1) := 0::bit(1);
+    sql_instr TEXT := 'select distinct utente from storicita_totale WHERE utente NOT LIKE ''' ||emailIn || ''' AND (id_pagina = ';
+	pagina_rec pagina%ROWTYPE;
+	user_rec storicita_totale.utente%TYPE;	
+BEGIN
+IF paginaIn = 0 THEN
+    FOR pagina_rec IN SELECT id_pagina FROM pagina WHERE emailautore = emailIn LOOP
+         IF flag = 1::bit(1) THEN sql_instr := sql_instr || ' OR id_pagina = ' || pagina_rec.id_pagina;
+		 ELSE sql_instr := sql_instr || pagina_rec.id_pagina; Flag := 1::bit(1); END IF;
+    END LOOP;
+ELSE
+	CALL CheckAutore(emailIn, paginaIn);
+    sql_instr := sql_instr || paginaIn;
+END IF;
+
+sql_instr := sql_instr || ')';
+
+FOR user_rec IN EXECUTE sql_instr LOOP
+    ListaUtenti := ListaUtenti || user_rec || ';';
+END LOOP;
+
+RETURN ListaUtenti;
+
+END;
+$GetUserModPage$ LANGUAGE plpgsql;

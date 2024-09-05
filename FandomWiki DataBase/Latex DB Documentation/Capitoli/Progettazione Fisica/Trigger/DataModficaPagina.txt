@@ -1,0 +1,12 @@
+CREATE OR REPLACE FUNCTION DataModficaPagina() RETURNS TRIGGER
+AS $DataModficaPagina$
+BEGIN
+	UPDATE pagina set dataultimamodifica = localtimestamp(0) where id_pagina = new.pagina; 
+	RETURN NEW;
+END;
+$DataModficaPagina$ LANGUAGE PLPGSQL;
+
+CREATE OR REPLACE TRIGGER DataModficaPagina
+AFTER INSERT ON frase
+FOR EACH ROW
+EXECUTE FUNCTION DataModficaPagina();

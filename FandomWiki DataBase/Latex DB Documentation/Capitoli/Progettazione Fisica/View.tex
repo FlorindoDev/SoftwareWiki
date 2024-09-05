@@ -1,0 +1,33 @@
+\lstset{
+    language=SQL, 
+    basicstyle=\small\ttfamily,
+    numbers=left, 
+    numberstyle=\tiny, 
+    frame=line,
+    keywordstyle=\color{blue},
+    commentstyle=\color{red},
+    stringstyle=\color{red},
+    identifierstyle=\color{black},
+    numberstyle=\tiny\color{black},
+    breaklines=true,
+    linewidth=1.2\linewidth,
+    showstringspaces=false,
+}
+
+\subsubsection{Storicita\_totale}
+\textbf{Implementazione di}:  \textit{Tutti gli autori potranno vedere tutta la storia di tutti i testi dei quali sono autori e di tutti quelli nei quali hanno proposto una modifica.}
+\newline
+\lstinputlisting{Capitoli/Progettazione Fisica/view/Storicita totale.txt}
+
+\subsubsection{Notifica}
+\textbf{Implementazione di}: \textit{La modifica proposta verrà notificata all’autore del testo originale la prossima volta che utilizzerà il sistema}.
+\newline\newline
+\textbf{Descrizione}: Vista che contiene tutte le notifiche di tutti gli autori che hanno una proposta di modifica ancora non accettata/rifiutata. Questa vista è utile per ottenere tutte le informazioni riguardanti le proposte in corso, per questo è preferibile una vista anziché una funzione funzione che faccia la stessa cosa filtrando per autore.
+\lstinputlisting{Capitoli/Progettazione Fisica/view/Notifica.txt}
+
+\newpage
+\subsubsection{Log\_page}
+\textbf{Implementazione di}: \textit{Tutti gli autori potranno vedere tutta la storia di tutti i testi dei quali sono autori}.
+\newline\newline
+\textbf{Descrizione}: Questa vista permette di vedere la storicità di tutti i testi ordinati per pagina e data.
+\lstinputlisting{Capitoli/Progettazione Fisica/view/log_page.txt}

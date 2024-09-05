@@ -1,0 +1,95 @@
+\lstset{
+    language=SQL, 
+    basicstyle=\small\ttfamily,
+    numbers=left, 
+    numberstyle=\tiny, 
+    frame=line,
+    keywordstyle=\color{blue},
+    commentstyle=\color{red},
+    stringstyle=\color{red},
+    identifierstyle=\color{black},
+    numberstyle=\tiny\color{black},
+    breaklines=true,
+    linewidth=1.2\linewidth,
+    showstringspaces=false,
+}
+
+\hypertarget{Modificaproposta}{}
+\subsubsection{Modifica\_proposta}
+\textbf{Vincolo}: Se l'attributo\textit{"visionata"} in \textit{"Operazione Utente"} è impostato a \textit{True} allora l'utente non potrà modificare quella proposta\newline\newline
+\textbf{Descrizione}: è un \textit{trigger} che al  momento della modifica del \textit{testo} in \textit{operazione\_utente}, prima di inserire la tupla controlla se quella "proposta di modifica" è stata già visualizzata. Se visionata è \textit{True(1)} allora impedisce l'Inserimento con un Excption.\newline
+
+\lstinputlisting{Capitoli/Progettazione Fisica/Trigger/Trigger Modifica_proposta.txt}
+
+
+\hypertarget{UtenteNoDelete}{}
+\subsubsection{Utente\_No\_Delete}
+\textbf{Vincolo}: Un \textit{"utente"} non può essere cancellato\newline\newline
+\textbf{Descrizione}: Lancia un'eccezione prima che una tupla nella tabella \textit{utente} venga cancellata.\newline
+
+\lstinputlisting{Capitoli/Progettazione Fisica/Trigger/Trigger Utente_No_Delete.txt}
+
+
+\hypertarget{ModificaDataMod}{}
+\subsubsection{ModificaDataMod}
+\textbf{Vincolo}: La \textit{DataR} deve combaciare sempre con l'ultima Data di modifica del testo\newline\newline
+\textbf{Descrizione}: Il \textit{"set time zone 'Europe/Rome';"} serve per impostare l'ora italiana. Questo trigger si occuperà di Modificare DataR nella data in cui è stato fatto l'Ultimo cambiamento al testo. \newline
+\lstinputlisting{Capitoli/Progettazione Fisica/Trigger/ModificaDataMod.txt}
+
+\newpage
+\hypertarget{AggiornamentoGeneralitaPagina}{}
+\subsubsection{Aggiornamento\_Generalita\_Pagina}
+\textbf{Vincolo}: In \textit{"pagina"} deve essere aggiornato il valore di Generalità\_autore in caso di modifica delle generalità dell'autore. \newline\newline
+\textbf{Descrizione}: Questo trigger prenderà tutte le pagine con l'email dell'autore a cui sono state aggiornate le generalità. Dopodiché prende il nome e il cognome aggiornati e li separa da un "\textbf{;}" poiché un nome o un cognome potrebbero avere spazzi. Per ogni pagina dell'autore aggiorneremo le generalità con le informazioni aggiornate.\newline
+\lstinputlisting{Capitoli/Progettazione Fisica/Trigger/Trigger Aggiornamento_Generalita_Pagina.txt}
+
+\newpage
+\hypertarget{SwitchAutore}{}
+\subsubsection{SwitchAutore}
+\textbf{Vincolo}: Un \textit{"Utente"} Diventa autore se crea una pagina \newline\newline
+\textbf{Descrizione}: Dopo aver inserito una pagina controlliamo se l'utente che ha creato la pagana è già un autore. Nel caso non lo fosse allora aggiorniamo il parametro autore a \textit{True}.
+\lstinputlisting{Capitoli/Progettazione Fisica/Trigger/SwitchAutore.txt}
+
+
+\hypertarget{SwitchUtente}{}
+\subsubsection{SwitchUtente}
+\textbf{Vincolo}: Un \textit{"Autore"} Diventa Utente se non ha più nessuna pagina \newline\newline
+\textbf{Descrizione}: dopo la cancellazione di una pagina controlliamo se l'autore della pagina cancellata ha altre pagine. se la query restituisce qualcosa allora non faremo nulla altrimenti l'autore diventerà Utente.\newline
+\lstinputlisting{Capitoli/Progettazione Fisica/Trigger/SwitchUtente.txt}
+
+\newpage
+\hypertarget{DataModficaPagina}{}
+\subsubsection{DataModficaPagina}
+\textbf{Vincolo}: \textit{"DataUltimaModifica"} in \textit{"Pagina"} deve essere aggiornata quando viene aggiunta o modificata una frase nella pagina. \newline\newline
+\textbf{Descrizione}: Quando inserisco o modifico in \textbf{frase} significa che ho modificato la pagina. Quindi aggiorno la \textit{"DataUltimaModifica"} della pagina.\newline
+\lstinputlisting{Capitoli/Progettazione Fisica/Trigger/DataModficaPagina.txt}
+
+
+\hypertarget{OperazioneAutoreIntegritaIns}{}
+\subsubsection{OperazioneAutoreIntegritaIns}
+\textbf{Vincolo}: Le azioni dell'autore sono registrate in \textit{Operazione\_autore}\newline\newline
+\textbf{Descrizione}: Quando un autore inserisce una frase l'operazione verrà registrata nei \textbf{LOG} dell'autore.\newline
+\lstinputlisting{Capitoli/Progettazione Fisica/Trigger/Operazione Autore Integrita Ins.txt}
+
+
+\hypertarget{OperazioneAutoreIntegritaMod}{}
+\subsubsection{OperazioneAutoreIntegritaMod}
+\textbf{Vincolo}: Le azioni dell'autore sono registrate in \textit{Operazione\_autore}\newline\newline
+\textbf{Descrizione}: Quando un autore modifica una frase l'operazione verrà registrata nei \textbf{LOG} dell'autore.\newline
+\lstinputlisting{Capitoli/Progettazione Fisica/Trigger/Operazione Autore integrita Mod.txt}
+
+\newpage
+\subsubsection{PositionControll}
+\textbf{Scopo}: Permette l'inserimento e  ottimizza l'inserimento. Si creano dei intervalli tra le parole per permettere di inserire nel mezzo senza spostare tutte le frasi.\newline\newline
+\textbf{Descrizione}: Questo trigger viene attivato ogni volta che viene inserita una frase in una pagina. Esso controlla la posizione massima (La posizione dell'ultima frase), se esiste l'immagazzina in una variabile(max\_pos) altrimenti imposta la variabile a zero (max\_pos). se la posizione massima (max\_pos) è più piccola della posizione di inserimento (new.posizione) allora creo un intervallo tra max\_pos e la nuova posizione della parola, questo perché se voglio inserire nel mezzo non troverò difficoltà. Nel caso opposto (max\_pos maggiore uguale a new.posizione) controlliamo prima se la nuova posizione è \textit{"1"} poiché è un caso particolare (ovvero se si inserisce una frase in testa, allora devo spostare tutte le frasi). Altrimenti imposto la nuova posizione (new.posizione) a meta dell'intervallo (tra il più piccolo dei successori e il più grande dei predecessori). Se questa posizione già esiste (caso in cui lo spazio tra due frasi è terminato) allora chiamo \hyperlink{UpadatePosition}{\textbf{UpadatePosition}} (che aggiunge spazzino nel'intervallo). In fine \textit{new.posizione} sarà impostata a meta del nuovo intervallo.\newline
+\lstinputlisting{Capitoli/Progettazione Fisica/Trigger/Position Controll.txt}
+
+\newpage
+\subsubsection{CheckAggiornamentoPagina}
+\textbf{Scopo}: Inserisce/modifica le frasi accettate dall'autore nelle pagine corrispondenti.\newline\newline
+\lstinputlisting{Capitoli/Progettazione Fisica/Trigger/CheckAggiornamentoPagina.txt}
+
+\subsubsection{DeleteFraseOpUtente}
+\textbf{Implementazione di}: \textit{Quando viene eliminata una ”pagina”, deve essere eliminato tutto il suo contenuto (Frasi), le sue occorrenze e le occorrenze del contenuto (Operazioni Utente e Autore)}.\newline\newline
+\textbf{Descrizione}: Questo trigger serve per eliminare le occorrenze di proposte di inserimento quando una pagina viene eliminata.\newline
+\lstinputlisting{Capitoli/Progettazione Fisica/Trigger/DeleteFraseOpUtente.txt}

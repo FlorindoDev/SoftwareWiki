@@ -1,0 +1,11 @@
+CREATE OR REPLACE VIEW log_page AS
+SELECT data, pagina_frase,testo,posizione_frase,link,link_pagina  from (
+  SELECT data, pagina_frase, testo, posizione_frase,link,link_pagina 
+  FROM Operazione_autore_ordered
+  
+  UNION
+  
+  SELECT data, pagina_frase, testo, posizione_frase,link,link_pagina 
+  FROM Operazione_utente_ordered
+) order by pagina_frase, data ASC;
+

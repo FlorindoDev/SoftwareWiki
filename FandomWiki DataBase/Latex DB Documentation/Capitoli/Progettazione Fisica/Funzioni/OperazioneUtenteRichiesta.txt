@@ -1,0 +1,44 @@
+CREATE OR REPLACE PROCEDURE OperazioneUtenteRichiesta(utente_in varchar(255),Testo_in Text,posizioneins_in integer, modifica_in BIT(1),pagina_in integer,posizione_frase_in integer, link_in BIT(1), link_pagina integer)
+AS $OperazioneUtenteRichiesta$
+BEGIN
+	IF EXISTS(SELECT id_pagina FROM pagina where pagina_in = pagina.id_pagina) THEN
+		IF link_in = 1::BIT(1) and EXISTS(SELECT id_pagina FROM pagina where link_pagina = pagina.id_pagina) THEN
+			IF EXISTS(select email from utente where utente_in like email) THEN
+				IF modifica_in = 0::BIT(1) THEN
+					INSERT INTO operazione_utente(dataA,dataR,testo,accettata,visionata,posizioneins,modifica,link,link_pagina,posizione_frase,pagina_frase,utente,autore_notificato)
+					VALUES(NULL,LOCALTIMESTAMP(0),Testo_in,0::BIT(1),0::BIT(1),posizioneins_in,modifica_in,link_in,link_pagina,NULL,pagina_in,utente_in,(Select emailautore from pagina where pagina_in = id_pagina));
+
+				ELSEIF EXISTS(select posizione from frase where pagina = pagina_in and posizione_frase_in = frase.posizione) THEN
+					INSERT INTO operazione_utente(dataA,dataR,testo,accettata,visionata,posizioneins,modifica,link,link_pagina,posizione_frase,pagina_frase,utente,autore_notificato)
+					VALUES(NULL,LOCALTIMESTAMP(0),Testo_in,0::BIT(1),0::BIT(1),posizioneins_in,modifica_in,link_in,link_pagina,posizione_frase_in,pagina_in,utente_in,(Select emailautore from pagina where pagina_in = id_pagina));
+				ELSE
+					RAISE EXCEPTION 'E08: La frase non esiste';
+					
+				END IF;
+			ELSE
+				RAISE EXCEPTION 'E10: Utente non corretto';
+			END IF;
+		ELSEIF link_in = 0::BIT(1) THEN
+			IF EXISTS(select email from utente where utente_in like email) THEN
+				IF modifica_in = 0::BIT(1) THEN
+					INSERT INTO operazione_utente(dataA,dataR,testo,accettata,visionata,posizioneins,modifica,link,link_pagina,posizione_frase,pagina_frase,utente,autore_notificato)
+					VALUES(NULL,LOCALTIMESTAMP(0),Testo_in,0::BIT(1),0::BIT(1),posizioneins_in,modifica_in,link_in,NULL,NULL,pagina_in,utente_in,(Select emailautore from pagina where pagina_in = id_pagina));
+
+				ELSEIF EXISTS(select posizione from frase where pagina = pagina_in and posizione = posizione_frase_in) THEN
+					INSERT INTO operazione_utente(dataA,dataR,testo,accettata,visionata,posizioneins,modifica,link,link_pagina,posizione_frase,pagina_frase,utente,autore_notificato)
+					VALUES(NULL,LOCALTIMESTAMP(0),Testo_in,0::BIT(1),0::BIT(1),posizioneins_in,modifica_in,link_in,NULL,posizione_frase_in,pagina_in,utente_in,(Select emailautore from pagina where pagina_in = id_pagina));
+				ELSE
+					RAISE EXCEPTION 'E08: La frase non esiste';
+
+				END IF;
+            ELSE
+                RAISE EXCEPTION 'E10: Utente non corretto';
+			END IF;
+		ELSE
+			RAISE EXCEPTION 'E04: La pagina non esiste(per il riferimento del link)';
+		END IF;
+	ELSE
+		RAISE EXCEPTION 'E09: La pagina non esiste';
+	END IF;
+END;
+$OperazioneUtenteRichiesta$ LANGUAGE PLPGSQL;

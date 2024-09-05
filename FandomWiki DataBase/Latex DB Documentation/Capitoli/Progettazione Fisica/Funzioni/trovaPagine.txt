@@ -1,0 +1,43 @@
+CREATE OR REPLACE FUNCTION trovaPagine (testoRicerca IN TEXT) 
+RETURNS TEXT AS
+$trovaPagine$
+DECLARE
+
+	stringaRicerca TEXT  := '%';--||testoRicerca||'%';
+	
+	pos INTEGER;
+	oldPos INTEGER:= 1;
+	parola TEXT;
+	page pagina%ROWTYPE;
+	
+	idTrovati TEXT:= '';
+
+BEGIN
+	
+	LOOP
+	
+		pos := POSITION(' ' IN SUBSTRING(testoRicerca FROM oldPos));
+		EXIT WHEN pos = 0;
+		parola := SUBSTRING (testoRicerca FROM oldPos FOR pos-1);
+		stringaRicerca := stringaRicerca || parola ||'%';
+		oldPos := oldPos + pos;
+		
+	END LOOP;
+	
+	parola := SUBSTRING(testoRicerca FROM oldPos);
+	stringaRicerca := stringaRicerca || parola ||'%';
+	
+	FOR page IN SELECT id_pagina FROM pagina WHERE titolo LIKE stringaRicerca LOOP
+		idTrovati:=idTrovati||page.id_pagina||'-';
+	END LOOP;
+	idTrovati:=RTRIM(idTrovati, '-');
+	
+	IF page IS NULL THEN
+		idTrovati := '-1';
+	END IF;
+	
+	RETURN idTrovati;
+
+END;
+$trovaPagine$
+LANGUAGE plpgsql;

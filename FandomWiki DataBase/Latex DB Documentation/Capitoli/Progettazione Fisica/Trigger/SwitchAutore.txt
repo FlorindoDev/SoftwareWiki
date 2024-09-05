@@ -1,0 +1,14 @@
+CREATE OR REPLACE FUNCTION SwitchAutore() RETURNS trigger 
+as $SwitchAutore$
+begin
+ 	IF NOT EXISTS(SELECT email FROM utente where new.emailautore = email and autore = 1::BIT(1)) THEN
+		UPDATE utente set autore = 1::BIT(1) where new.emailautore = email;
+	END IF;
+	RETURN NEW;
+end;
+$SwitchAutore$  LANGUAGE plpgsql;
+
+CREATE OR REPLACE TRIGGER SwitchAutore
+BEFORE INSERT ON pagina
+FOR EACH ROW
+EXECUTE FUNCTION SwitchAutore();

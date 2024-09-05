@@ -1,0 +1,14 @@
+CREATE OR REPLACE FUNCTION Modifica_Proposta() 
+RETURNS TRIGGER 
+AS $Modifica_Proposta$
+BEGIN
+    RAISE EXCEPTION 'E07: La modifica e gia stata visionata';
+    RETURN NEW;
+END;
+$Modifica_Proposta$ LANGUAGE plpgsql;
+
+CREATE TRIGGER modifica_proposta
+BEFORE UPDATE OF testo ON operazione_utente 
+FOR EACH ROW
+WHEN (old.visionata = 1::bit(1))
+EXECUTE FUNCTION modifica_proposta();

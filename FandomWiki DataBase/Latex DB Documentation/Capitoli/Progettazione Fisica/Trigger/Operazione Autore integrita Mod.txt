@@ -1,0 +1,14 @@
+CREATE OR REPLACE FUNCTION OperazioneAutoreIntegritaMod() RETURNS TRIGGER AS 
+$OperazioneAutoreIntegritaMod$
+BEGIN
+IF NOT EXISTS(SELECT id_operazione from operazione_utente where new.pagina = pagina_frase and posizione_frase = new.posizione) THEN
+	INSERT INTO operazione_autore(data,testo,posizioneins,modifica,link,link_pagina,posizione_frase,pagina_frase,autore) VALUES(localtimestamp(0),new.testo,NULL,0::BIT(1),new.link,new.linkpagina,new.posizione,new.pagina,(select emailautore from pagina where new.pagina = id_pagina));
+END IF;
+RETURN NEW;
+END;
+$OperazioneAutoreIntegritaMod$ LANGUAGE PLPGSQL;
+
+CREATE OR REPLACE TRIGGER OperazioneAutoreIntegritaMod
+AFTER UPDATE OF testo ON Frase
+FOR EACH ROW
+EXECUTE FUNCTION OperazioneAutoreIntegritaMod();

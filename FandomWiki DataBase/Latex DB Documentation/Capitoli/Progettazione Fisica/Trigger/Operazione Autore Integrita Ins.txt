@@ -1,0 +1,13 @@
+CREATE OR REPLACE FUNCTION OperazioneAutoreIntegritaIns() RETURNS TRIGGER AS $OperazioneAutoreIntegritaIns$
+BEGIN
+IF NOT EXISTS(SELECT id_operazione from operazione_utente where new.pagina = pagina_frase and posizioneins = new.posizione) THEN
+	INSERT INTO operazione_autore(data,testo,posizioneins,modifica,link,link_pagina,posizione_frase,pagina_frase,autore) VALUES(localtimestamp(0),new.testo,new.posizione,0::BIT(1),new.link,new.linkpagina,new.posizione,new.pagina,(select emailautore from pagina where new.pagina = id_pagina));
+END IF;
+RETURN NEW;
+END;
+$OperazioneAutoreIntegritaIns$ LANGUAGE PLPGSQL;
+
+CREATE OR REPLACE TRIGGER OperazioneAutoreIntegritaIns
+AFTER INSERT ON Frase
+FOR EACH ROW
+EXECUTE FUNCTION OperazioneAutoreIntegritaIns();

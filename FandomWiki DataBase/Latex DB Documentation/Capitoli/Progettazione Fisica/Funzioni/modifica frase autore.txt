@@ -1,0 +1,22 @@
+CREATE OR REPLACE PROCEDURE ModificaFraseAutore(Id_pagina_in INTEGER, Emailautore VARCHAR(255), Testo_in TEXT, link_in BIT(1), titolo_pagina_link varchar(255), posizione_in INTEGER)
+AS $ModificaFraseAutore$
+DECLARE
+	idpagina_link INTEGER;
+	
+BEGIN 
+
+	CALL CheckAutore(EmailAutore, id_pagina_in);
+	IF(link_in = 1::BIT(1)) then
+		SELECT id_pagina INTO idpagina_link FROM pagina where  titolo_pagina_link = pagina.titolo;
+		IF FOUND THEN
+			UPDATE frase SET testo = Testo_in , link = link_in, linkpagina = idpagina_link  where Id_pagina_in = pagina and posizione_in = posizione;   
+		else
+			RAISE EXCEPTION 'E10: La pagina non esiste(link non valido)';
+			ROLLBACK;
+		END IF;
+	ELSE
+		UPDATE frase SET testo = Testo_in , link = link_in, linkpagina = NULL where Id_pagina_in = pagina and posizione_in = posizione;
+	END IF;	
+	
+END;
+$ModificaFraseAutore$ LANGUAGE PLPGSQL;

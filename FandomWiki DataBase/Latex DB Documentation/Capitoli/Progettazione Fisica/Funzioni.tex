@@ -1,0 +1,75 @@
+\hypertarget{CreazionePagina}{}
+\subsubsection{CreazionePagina}
+\textbf{Vincolo}: Una \textit{"Pagina"} non può essere vuota \newline\newline
+\textbf{Descrizione}: Si potrà creare una pagina solo tramite questa Procedura. Inoltre la procedura garantirà che subito dopo alla creazione di una pagina ci sarà un inserimento di una frase. Essendo tutta la Procedura in un blocco \textbf{BEGIN/END} nel caso ci fosse un errore sarà fatto il \textbf{ROLLBACK} cosi mantenendo la \textit{consistenza nel DB}.\newline
+\lstinputlisting{Capitoli/Progettazione Fisica/Funzioni/Creazione Pagina.txt}
+
+\newpage
+\subsubsection{InsertFraseAutore}
+\textbf{Scopo}: Inserire una frase \newline\newline
+\textbf{Descrizione}: La Procedura controlla che l'utente inserito esiste, controlla se la frase che stiamo inserendo deve diventare un link e controlla se la pagina a cui fa riferimento il link esiste. Dopodiché inseriamo la frase. Se la frase non è link inseriamo senza mettere riferimenti ad altre pagine. \newline
+\lstinputlisting{Capitoli/Progettazione Fisica/Funzioni/inserimento frase autore.txt}
+
+\newpage
+\subsubsection{ModificaFraseAutore}
+\textbf{Scopo}: Premete la modifica di una frase da parte dell'autore della pagina \newline\newline
+\textbf{Descrizione}: La Procedura controlla che l'utente inserito esiste, se la frase che stiamo modificando deve diventare un link e se la pagina a cui fa riferimento il link esiste. Dopodiché modifichiamo la frase. se la frase non è link modifichiamo solo il testo.\newline
+\lstinputlisting{Capitoli/Progettazione Fisica/Funzioni/modifica frase autore.txt}
+
+\newpage
+\subsubsection{CheckAutore}
+\textbf{Scopo}: Funzione che controlla se le operazioni sono concrete e svolte dall'autore della pagina.\newline\newline
+\textbf{Descrizione}: Questa procedura permette di controllare le seguiteti condizioni: se la pagina inserita esiste, se l'utente inserito esiste ed è autore e se la pagina su cui vogliamo applicare la modifica è effettivamente la nostra. Se una di queste condizioni non è vera allora verrà lanciato un \textbf{EXCETION}.\newline
+\lstinputlisting{Capitoli/Progettazione Fisica/Funzioni/Check Autore.txt}
+
+\newpage
+\hypertarget{OperazioneUtenteRichiesta}{}
+\subsubsection{OperazioneUtenteRichiesta}
+\textbf{Vincolo}: Le azioni dell'utente sono registrate in \textit{Operazione\_utente} \newline\newline
+\textbf{Descrizione}: Questa funzione permette al utente di richiedere un inserimento o una modifica. in base ai parametri inseriti andremo nel caso del inserimento o della modifica. Sempre tramite parametri possiamo capire se vogliamo che quella frase diventi/sia un link\newline
+\lstinputlisting{Capitoli/Progettazione Fisica/Funzioni/OperazioneUtenteRichiesta.txt}
+
+\newpage
+\subsubsection{GetUserModPage}
+\textbf{Scopo}: Lista di tutti gli utenti che hanno almeno una volta proposto un operazione su almeno una pagina dell'autore in input oppure una Lista di utenti che hanno almeno una volta proposto un operazione su una pagina in input e su un autore specifico. \newline\newline
+\textbf{Descrizione}: Utilizzeremo SQL dinamico per creare la query. Se l'input della pagina (paginaIn) sarà \textit{'0'} Allora la funzione ritorna tutte gli utenti che hanno Richiesto un Operazione su almeno una pagina dell'autore che richiama la funzione. Quindi tramite un cursore scorro tutte le pagine dell'autore e le aggiungo alla condizione della query. Altrimenti aggiungo solo la pagina interessata. La funzione restituisce una stringa dove ogni utente e diviso tramite un \textit{';'}
+\lstinputlisting{Capitoli/Progettazione Fisica/Funzioni/GetUserModPage.txt}
+
+
+\newpage
+\hypertarget{UpadatePosition}{}
+\subsubsection{UpadatePosition}
+\textbf{Scopo}: Aggiorna la posizione da un certo valore. Aggiorna i valori dal più grande al più piccolo\newline\newline
+\textbf{Descrizione}: Questa funzione dato la pagina (pagina\_in) la posizione (posizione\_in) e il caso aggiornerà tutte le posizioni che sono maggiori della posizione\_in nel caso diverso da 1 (caso != 1) altrimenti quelli maggiori uguali. Questo perché 1 è un caso particolare e deve essere gestito singolarmente.\newline
+\lstinputlisting{Capitoli/Progettazione Fisica/Funzioni/UpadatePosition.txt}
+
+\newpage
+\subsubsection{AccettaProposta}
+\textbf{Scopo}: Procedura che permetta all'autore di accettare o rifiutare una proposta di modifica da parte di un utente.\newline\newline
+\textbf{Descrizione}:La procedura andrà a registrare nel LOG di operazione\_utente la data di accettazione/rifiuto e setterà l'attributo accettata a True. L'inserimento o l'aggiornamento delle modifiche di una frase sarà fatto da un trigger.\newline
+\lstinputlisting{Capitoli/Progettazione Fisica/Funzioni/AccettaProposta.txt}
+
+
+\newpage
+\subsubsection{GetLimtUserModPage}
+\textbf{Scopo}: Ci permette di vedere tutti gli utenti che hanno proposto almeno una volta una modifica/inserimento rispetto a una serie di pagine in input.\newline\newline
+\textbf{Descrizione}: La funzione prenderà in input una stringa contente una serie di Id\_pagina divisi da un \textit{'+'}. Tramite sql dinamico creiamo una query che selezionerà tutti gli utenti che hanno almeno proposto una modifica/inserimento nelle pagine in input. Dopodiché aver preso tutte l'email distinte fra di loro  inseriamo ogni email in una stringa di output, dove ogni email è diviso da un \textit{'+'}.\newline
+\lstinputlisting{Capitoli/Progettazione Fisica/Funzioni/GetLimtUserModPage.txt}
+
+\newpage
+\subsubsection{VisualizzaPropostaAndConfronta}
+\textbf{Scopo}: Funzione che permettere di visualizzare i dati di un inserimento e confrontare i dati tra una frase e la sua proposta di modifica.\newline\newline
+\textbf{Descrizione}: La funzione verifica che l'id dell'operazione passata esiste, se l'utente che sta visualizzando l'operazione ha diritto a visualizzare la notifica e se è autore della pagina in cui è stata effettuata la proposta. Superati i controlli nel caso dell'inserimento la funzione restituisce una stringa, contente i dati della frase che l'utente vuole inserire, cosi formattata:  \textbf{'titolo+testo,posizione,link,id\_pagina\_riferita,titolo\_pagina\_riferita'}. Nel caso di una modifica verranno confrontati i dati originali con quelli proposti, e la stringa restituita sarà cosi formattata: \textbf{'Titolo+testo, posizione,link, id\_pagina\_riferita, titolo\_pagina\_riferita; proposta\_testo, proposta\_posizione, proposta\_link, proposta\_id\_pagina\_riferita, proposta\_titolo\_pagina\_riferita'}.\newline
+\lstinputlisting{Capitoli/Progettazione Fisica/Funzioni/visualizzaPropostaAndConfronta.txt}
+
+\newpage
+\subsubsection{trovaPagina}
+\textbf{Scopo}: Permette di cercare le pagine wiki.\newline\newline
+\textbf{Descrizione}: Una volta passata la stringa di ricerca/input la funzione andrà a cercare tutte le pagine che contengono nel titolo le stesse parole e ritornerà una stringa cosi formattata \textbf{'id1-id2-...-idn'} contenente gli id delle pagine che corrispondono alla ricerca. Se nessuna pagina viene trovata allora la funzione ritornerà \textbf{'-1'}.
+\lstinputlisting{Capitoli/Progettazione Fisica/Funzioni/trovaPagine.txt}
+
+
+\subsubsection{ModificaRichestaProposta}
+\textbf{Scopo}: Permette di modificare una proposta inviata.\newline\newline
+\textbf{Descrizione}: La procedura controlla se esiste la proposta del utente. Se esiste modifica il testo altrimenti lancia un \textbf{EXCEPTION}.
+\lstinputlisting{Capitoli/Progettazione Fisica/Funzioni/ModificaRichestaProposta.txt}

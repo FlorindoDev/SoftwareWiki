@@ -1,0 +1,21 @@
+CREATE OR REPLACE FUNCTION CheckAggiornamentoPagina() 
+RETURNS TRIGGER 
+AS $CheckAggiornamentoPagina$
+BEGIN
+	IF NEW.accettata = 1::bit(1) THEN
+		IF NEW.modifica = 1::bit(1) THEN
+			UPDATE frase SET testo = NEW.testo, link = NEW.link, linkpagina = NEW.link_pagina WHERE pagina = NEW.pagina_frase AND posizione = NEW.posizione_frase;
+		ELSE
+			INSERT INTO frase VALUES (NEW.pagina_frase, NEW.posizioneins, NEW.testo, NEW.link, NEW.link_pagina);
+		END IF;
+	END IF;
+	
+    RETURN NEW;
+END;
+$CheckAggiornamentoPagina$ 
+LANGUAGE plpgsql;
+
+CREATE OR REPLACE TRIGGER CheckAggiornamentoPagina
+AFTER UPDATE OF Dataa ON operazione_utente
+FOR EACH ROW
+EXECUTE FUNCTION CheckAggiornamentoPagina();

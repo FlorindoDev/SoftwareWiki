@@ -1,0 +1,53 @@
+\newcolumntype{L}{>{\raggedright\arraybackslash}p{4cm}}
+
+\begin{longtable}{|p{3cm}|p{6cm}|L|}
+
+\hline
+\textbf{Associazioni} & \textbf{Descrizione} & \textbf{Attributi}\\
+\hline
+
+\endfirsthead
+\multicolumn{3}{c}{} \\
+\hline
+\textbf{Associazioni} & \textbf{Descrizione} & \textbf{Attributi}\\
+\hline
+\endhead
+
+Crea &  
+Associazione \textbf{Molti-a-Uno} tra \textit{Pagina} e \textit{Autore}. Questa classe-associazione è utilizzata per memorizzare dati utili inerenti alla creazione della pagina. & 
+\textbf{Data}(DateTime): Questo attributo si riferisce alla data di creazione della pagina wiki\\
+
+\hline
+Aggiunge (utente) & 
+Associazione \textbf{Uno-a-Uno} tra \textit{Frase} e \textit{Inserimento utente}. Una farse può avere uno o zero inserimenti da parte del utente. Un' inserimento aggiunge una sola frase.
+&\\
+
+\hline
+Cambia (utente)& 
+Associazione \textbf{Molti-a-Uno} tra \textit{Frase} e \textit{Modifica utente}. Una frase può essere modificata zero o più volte. Una modifica può modificare solo una frase.
+&\\
+
+\hline
+Aggiunge (autore)& 
+Associazione \textbf{Uno-a-Uno} tra \textit{Frase} e \textit{Inserimento autore}. Una farse può avere uno o zero inserimenti da parte dell'autore. Un' inserimento aggiunge una sola frase.
+&\\
+
+\hline
+Cambia (autore)& 
+Associazione \textbf{Molti-a-Uno} tra \textit{Frase} e \textit{Modifica autore}. Una frase può essere modificata zero o più volte. Una modifica può modificare solo una frase.
+&\\
+
+\hline
+Si riferisce &
+Associazione \textbf{Molti-a-Uno} tra \textit{Link} e \textit{Pagina}. Questa associazione si riferisce al fatto che una frase (link) è collegata/contiene il collegamento ad un altra pagina wiki.&\\
+
+\hline
+Notificato &
+Associazione \textbf{Molti-a-Uno} tra \textit{Operazione} e \textit{Autore}. Questa associazione si riferisce al fatto che un'autore visualizza le modifiche proposte alla sua pagina wiki. Una modifica verrà quindi visualizzata da un autore, ma l'autore visualizzerà tutte le modifiche inerenti alla sua pagina.&\\
+
+\hline
+Effettua&  
+Associazione \textbf{Multi-a-Uno} tra \textit{Operazione} e \textit{Utente}. Questa associazione si riferisce al fatto che un utente ha la possibilità di proporre una frase alla pagina wiki. Un utente quindi può proporre nessuna o tante operazioni su una pagina, mentre un'operazione specifica di un utente è effettuata da un solo utente& \\
+
+\hline
+\end{longtable}

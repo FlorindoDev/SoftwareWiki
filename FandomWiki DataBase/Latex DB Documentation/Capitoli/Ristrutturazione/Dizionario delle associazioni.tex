@@ -1,0 +1,45 @@
+\newcolumntype{L}{>{\raggedright\arraybackslash}p{4cm}}
+
+\begin{longtable}{|p{3cm}|p{6cm}|L|}
+
+\hline
+\textbf{Associazioni} & \textbf{Descrizione} & \textbf{Attributi}\\
+\hline
+
+\endfirsthead
+\multicolumn{3}{c}{} \\
+\hline
+\textbf{Associazioni} & \textbf{Descrizione} & \textbf{Attributi}\\
+\hline
+\endhead
+
+Crea&  
+Associazione \textbf{Molti-a-Uno} tra \textit{Pagina} e \textit{Autore}. Questa classe-associazione è utilizzata per memorizzare dati utili inerenti alla creazione della pagina.& 
+\textbf{Data}(Timestamp): Questo attributo si riferisce alla data di creazione della pagina wiki.\\
+
+\hline
+Altera&
+Associazione \textbf{Molti-a-Uno} tra \textit{Operazione Autore} e \textit{Frase}. Questa associazione si riferisce al fatto che una frase può subire modifiche oppure essere inserita in una pagina dall'autore&\\
+
+\hline
+Altera&
+Associazione \textbf{Molti-a-UNo} tra \textit{Operazione Utente} e \textit{Frase}. Questa associazione si riferisce al fatto che una frase può subire modifiche oppure essere inserita in una pagina dall'utente, dopo l'approvazione dell'autore&\\
+
+\hline
+Si riferisce&
+Associazione \textbf{Uno-a-Molti} tra \textit{Frase} e \textit{Pagina}. Questa associazione si riferisce al fatto che una frase (link) è collegata/contiene il collegamento ad un altra pagina wiki.&\\
+
+\hline
+Notificato&
+Associazione \textbf{Molti-a-Uno} tra \textit{Operazione Utente} e \textit{Autore}. Questa associazione si riferisce al fatto che un'autore visualizza le modifiche proposte alla sua pagina wiki. Una modifica verrà quindi visualizzata da un autore, ma l'autore visualizzerà tutte le modifiche inerenti alla sua pagina.&\\
+
+\hline
+Effettua&  
+Associazione \textbf{Molti-a-Uno} tra \textit{Operazione Utente} e \textit{Utente}. Questa associazione si riferisce al fatto che un utente ha la possibilità di proporre una frase alla pagina wiki. Un utente quindi può proporre nessuna o tante operazioni su una pagina&\\
+
+\hline
+Effettua&  
+Associazione \textbf{Molti-a-Uno} tra \textit{Operazione Autore} e \textit{Utente}. Questa associazione si riferisce al fatto che un autore ha la possibilità la pagina wiki attraverso le operazioni sulle frasi. Un autore quindi può proporre nessuna o tante operazioni su una pagina ma effettuerà come minimo un'inserimento&\\
+
+\hline
+\end{longtable}

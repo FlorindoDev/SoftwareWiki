@@ -1,0 +1,16 @@
+CREATE OR REPLACE PROCEDURE AccettaProposta (EmailIn IN d_Email, IdOperazione IN INTEGER, AccettataIn IN  bit(1))
+AS $AccettaProposta$
+DECLARE
+	
+	notifica_rec notifica%ROWTYPE;
+
+BEGIN
+	select * into notifica_rec from notifica where autore_notificato = EmailIn AND id_operazione = IdOperazione;
+	IF FOUND THEN
+		UPDATE operazione_utente SET accettata = AccettataIn, dataa = LOCALTIMESTAMP(0), visionata = 1::bit(1) WHERE id_operazione = IdOperazione AND autore_notificato = EmailIn;
+	ELSE
+		RAISE EXCEPTION 'E01: Non esiste una proposta per % con id_operazione %', EmailIn, IdOperazione; 
+	END IF;
+
+END;
+$AccettaProposta$ LANGUAGE plpgsql;

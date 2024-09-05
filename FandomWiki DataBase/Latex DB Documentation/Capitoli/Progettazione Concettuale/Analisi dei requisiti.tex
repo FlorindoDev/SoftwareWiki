@@ -1,0 +1,75 @@
+
+
+
+\subsubsection{Traccia}
+%\begin{comment}
+\textit{“Una pagina di una wiki ha un titolo e un testo. Ogni pagina è creata da un determinato autore. Il
+testo è composto di una sequenza di frasi. Il sistema mantiene traccia anche del giorno e ora nel quale la pagina è stata creata. La pagina può contenere anche dei collegamenti. Ogni collegamento è caratterizzato da una frase da cui scaturisce il collegamento e da un’altra pagina destinazione del collegamento.}\newline
+
+\textit{Il testo può essere modificato da un altro utente del sistema, che seleziona una o più delle frasi, scrive la sua versione alternativa (modifica) e prova a proporla.}\newline
+
+\textit{La modifica proposta verrà notificata all’autore del testo originale la prossima volta che utilizzerà il sistema.}\newline
+
+\textit{L’autore potrà vedere la sua versione originale e la modifica proposta. Egli potrà accettare la modifica (in quel caso la pagina originale diventerà ora quella con la modifica apportata), rifiutare la modifica (la pagina originale rimarrà invariata). La modifica proposta dall’autore verrà memorizzata nel sistema e diventerà subito parte della versione corrente del testo. Il sistema mantiene memoria delle modifiche proposte e anche delle decisioni dell’autore (accettazione o rifiuto).}\newline
+
+\textit{Nel caso in cui si fossero accumulate più modifiche da rivedere, l’autore dovrà accettarle o rifiutarle tutte nell’ordine dalla più antica alla più recente."}
+
+\textit{Gli utenti generici del sistema potranno cercare una pagina e il sistema mostrerà la versione corrente del
+testo e i collegamenti.
+Gli autori dovranno prima autenticarsi fornendo la propria login e password. Tutti gli autori potranno vedere
+tutta la storia di tutti i testi dei quali sono autori e di tutti quelli nei quali hanno proposto una modifica.}
+
+%\end{comment}
+\subsubsection{Preambolo}
+La prima fase della progettazione consiste nell'analisi dei requisiti. Qui verranno identificate le informazioni principali che porteranno allo sviluppo della struttura del data base per la Wiki.
+Durante l’analisi saranno individuate le diverse entità, relazioni, alcuni vincoli (ci sarà una sezione apposita per i vincoli) e comportamenti del data base.
+
+\subsubsection{Ipotesi}
+La nostra base di dati immagazzinerà i dati per la gestione di una wiki. Prima di analizzare il problema faremo alcune ipotesi, su alcuni punti non specificati dalla Traccia:
+    \begin{itemize}
+
+        \item{
+            una pagina può essere creata solo da un autore, se qualcun' altro vorrà contribuire manderà una richiesta di inserimento o modifica al autore della pagina.
+        }
+        \item{
+            un utente oltre a proporre una modifica può anche richiedere un inserimento. 
+        }
+
+        \item{
+            un autore oltre ad avere la possibilità di modificare ha anche la possibilità di inserire.
+        }
+
+    \end{itemize}
+
+
+\subsubsection{Componenti trovati}
+
+        \begin{itemize}
+            \item{\textbf{Pagina}: conterrà il titolo, le generalità dell'autore e la data del ultima modifica.}\newline
+            
+            \item{\textbf{Autore}: Possiamo pensare intuitivamente che non tutti gli utenti della \textit{wiki} siano autori. Ci potranno essere  degli utenti  che fruiscono soltanto, quest'ultimi possono anche decidere di non creare    mai nessuna \textit{wiki} e di conseguenza non essere classificati come un autore.
+              Generalizzando possiamo individuare una \textit{Superclasse(padre)} di nome \textit{Utente} e una \textit{Sottoclasse(figlio)} di nome \textit{Autore}. Un utente non deve essere obbligatoriamente un autore, ma se decidesse di creare una \textit{wiki} allora dovrà essere visto come autore \textit{(Parziale/disgiunta)}. La \textit{Superclasse(padre)} conterrà \textit{nome, cognome, email, password e genere.}} \newline
+              
+            \item{\textbf{Frase}: Un insieme di frasi formerà una \textit{pagina}. Ogni frase avrà un testo e una posizione (per capire chi verrà prima di un'altra). Notiamo che un \textit{link} è una frase che fa riferimento a una \textit{pagina}. Possiamo generalizzare individuando una \textit{Superclasse(padre)} di nome \textit{Frase} e una \textit{Sottoclasse(figlio)} di nome \textit{link}. Una frase può non essere un link, ma se si riferisce a una pagina allora diventerà link\textit{(Parziale/disgiunta).}} \newline
+            
+            
+            \item{\textbf{Operazione di utente}: Entità che conterrà i dati necessari per costruire un LOG composto dalle azioni effettuate dall'utente. È una \textit{Superclasse(padre)} di nome \textit{operazione utente} con due \textit{Sottoclassi(figlio) "inserimento utente" e "modifica utente"}. \textit{Superclasse(padre)} avrà come attributi \textit{dataR(data Richiesta), dataA (data Accettazione o di rifiuto, dipende dal caso in cui ci troviamo), testo, visionata, link, Riferimento alla pagina e accettata}. La \textit{Sottoclasse(figlio) "inserimento utente"} ha come attributo aggiuntivo \textit{posizione}(per capire dove verrà inserita questa frase).} \newline %\newpage
+
+            \item{\textbf{Operazione di autore}: Questa generalizzazione è simile a \textit{Operazione di utente}, e conterrà i dati necessari per costruire un LOG composto dalle azioni dell'autore.
+            Le differenze sono: il numero di attributi inferiore rispetto a \textit{Operazione utente} (essendo che le modifiche dell'autore hanno valenza immediata) e la mancanza di un'associazione (Notifica).}\newline
+        \end{itemize}
+        Alcune considerazioni su Operazione. quest'ultima si divide in \textit{Operazione Utente} e\textit{ Operazione autore}, perché le due differiscono fra di loro. l'utente deve \textit{proporre} un inserimento/modifica a differenza del autore che apporta le modifiche o inserimenti \textit{immediatamente}. un altra differenza sono gli attributi e relazioni (mancanza dell'associazione Notifica in Operazione Autore).
+        
+\subsubsection{Relazioni tra i componenti}
+        \begin{itemize}
+            \item{\textbf{Una pagina} viene \textit{creata} da un \textit{autore}, la classe-associazione \textit{crea} ricorderà quando è stata creata la \textit{pagina}.}\newline
+            \item{\textbf{Un autore} può inserire nuove frasi e modificarle. Queste \textit{Sottoclassi} di nome \textit{"inserimento autore" e "modifica autore"} avranno rispettivamente \textit{la data di inserimento/modifica e il testo della nuova frase}. Un vincolo è alla creazione della pagina, quest’ultima deve avere almeno un testo iniziale composto da almeno una o più frasi. L’autore quindi alla creazione è obbligato a inserire almeno una frase.}\newline
+            
+            \item{\textbf{Un utente} può effettuare delle \textit{modifiche} alle frasi, quest'ultime saranno contenute in \textit{“modifiche utente”}. l'utente può modificare la \textit{"proposta di modifica"} se quest'ultima non è stata ancora visionata dall'autore. In caso di modifica alla \textit{proposta di modifica} dataR sarà aggiornata alla data dell'ultima modifica apportata a quella \textit{"proposta di modifica"}\newline
+            }
+            
+            \item{\textbf{Un utente} può effettuare degli \textit{inserimenti}, quest'ultimi avranno lo stesso funzionamento e concetto della modifica.}\newline
+            
+            \item{\textbf{Una Operazione di utente} viene \textit{notificata/visualizzata a/da un autore}, ovviamente verranno  notificate soltanto quelle non visualizzate.}\newline
+        \end{itemize}
+

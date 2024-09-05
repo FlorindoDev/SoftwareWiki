@@ -1,0 +1,143 @@
+\documentclass{article}
+\usepackage{hyperref}
+\usepackage{comment}
+\usepackage{longtable}
+\usepackage{array}
+\usepackage{graphicx}
+\usepackage{fancyhdr}
+\usepackage[italian]{babel}
+\usepackage{amsmath}
+\usepackage{enumitem}
+%\usepackage{geometry}
+
+\usepackage{tikz} %copertina
+\usetikzlibrary{shapes.geometric, calc} %copertina
+\usepackage{xcolor} %copertina
+
+\usepackage{listings} %sql
+\lstset{
+    language=SQL, 
+    basicstyle=\small\ttfamily,
+    numbers=left, 
+    numberstyle=\tiny, 
+    frame=line,
+    keywordstyle=\color{blue},
+    commentstyle=\color{red},
+    stringstyle=\color{orange},
+    identifierstyle=\color{black},
+    numberstyle=\tiny\color{black},
+    breaklines=true,
+    linewidth=1.185\linewidth
+}
+
+\hypersetup{
+    colorlinks=true,
+    linkcolor=black,      % Colore del testo del link
+    citecolor=blue,      % Colore delle citazioni nel testo
+    urlcolor=blue,       % Colore degli URL
+    linkbordercolor=blue, % Colore del bordo del link
+    citebordercolor=blue, % Colore del bordo delle citazioni nel testo
+    urlbordercolor=blue,  % Colore del bordo degli URL
+    pdfborderstyle={/S/U/W 1}, % Stile del bordo del link (sottolineato)
+}
+
+\begin{document}
+
+\input{Copertina/copertina}
+
+\newpage
+
+\tableofcontents
+
+\newpage
+
+\pagestyle{fancy}
+\fancyhead[L]{ }
+
+\section{Progettazione Concettuale}
+
+\subsection{Analisi dei Requisiti}
+\input{Capitoli/Progettazione Concettuale/Analisi dei requisiti}
+
+\newpage
+\section{Schema Concettuale}
+\input{Capitoli/Progettazione Concettuale/Schema concettuale}
+
+\newpage
+\subsection{Dizionario delle entità}
+\input{Capitoli/Progettazione Concettuale/Dizionario delle entità}
+
+\subsection{Dizionario delle associazioni}
+\input{Capitoli/Progettazione Concettuale/Dizionario delle relazioni}
+
+\newpage
+\section{Ristrutturazione del modello concettuale}
+
+\subsection{Analisi delle Ridondanze}
+\input{Capitoli/Ristrutturazione/Analisi ridondanze}
+
+\subsection{Eliminazione delle Generalizzazioni}
+\input{Capitoli/Ristrutturazione/Eliminazione generalizzazione}
+
+\subsection{Eliminazione degli attributi multivalore}
+\input{Capitoli/Ristrutturazione/Eliminazione attributi multivalore}
+
+\subsection{Eliminazione degli attributi composti}
+\input{Capitoli/Ristrutturazione/Eliminazione valori composti}
+
+\subsection{Partizionamento/accorpamento di entità/associazioni}
+\input{Capitoli/Ristrutturazione/Accorpamento antita}
+\subsection{Identificazione chiavi primarie}
+\input{Capitoli/Ristrutturazione/Chiavi Primarie}
+
+\subsection{Schema Ristrutturato UML}
+\includegraphics[width=1\textwidth]{Capitoli/Ristrutturazione/UML_Ristrutturato.pdf}
+
+\subsection{Schema Ristrutturato ER}
+\includegraphics[width=1\textwidth]{Capitoli/Ristrutturazione/ER ristrutturato.pdf}
+
+\newpage\newpage
+\subsection{Dizionario delle Entità}
+\input{Capitoli/Ristrutturazione/Dizionario delle entita}
+
+\newpage
+\subsection{Dizionario delle associazioni}
+\input{Capitoli/Ristrutturazione/Dizionario delle associazioni}
+
+
+\newpage
+\section{Traduzione al Modello Logico}
+
+\subsection{Mapping delle Associazioni}
+\input{Capitoli/Modello logico/Mapping delle associazioni}
+\newpage
+
+\subsection{Modello logico}
+\input{Capitoli/Modello logico/Modello logico}
+
+\section{Progettazione Fisica}
+
+\subsection{Creazione delle tabelle}
+\lstinputlisting{Capitoli/Progettazione Fisica/creazione delle tabelle.txt}
+\newpage
+
+\subsection{Vincoli}
+\input{Capitoli/Progettazione Fisica/Vincoli}
+
+\newpage
+\subsection{Trigger}
+\input{Capitoli/Progettazione Fisica/Trigger}
+
+\newpage
+\subsection{Funzioni e Procedure}
+\input{Capitoli/Progettazione Fisica/Funzioni}
+
+\newpage
+\subsection{Viste}
+\input{Capitoli/Progettazione Fisica/View}
+
+\newpage
+\section{Dizionari degli Errori}
+\input{Capitoli/Errori/errori}
+
+\end{document}

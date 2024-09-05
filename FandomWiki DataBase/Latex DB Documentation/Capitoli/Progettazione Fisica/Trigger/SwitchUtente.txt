@@ -1,0 +1,13 @@
+CREATE OR REPLACE FUNCTION SwitchUtente() RETURNS trigger as $SwitchUtente$
+begin
+ 	IF NOT EXISTS(SELECT p1.Id_pagina FROM (pagina as p1 join pagina on old.emailautore = p1.emailautore)) THEN
+		UPDATE utente set autore = 0::BIT(1) where old.emailautore = email;
+	END IF;
+	RETURN NEW;
+end; 
+$SwitchUtente$  LANGUAGE plpgsql;
+
+CREATE OR REPLACE TRIGGER SwitchUtente
+AFTER DELETE ON pagina
+FOR EACH ROW
+EXECUTE FUNCTION SwitchUtente();

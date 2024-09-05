@@ -1,0 +1,24 @@
+Gli attributi \underline{sottolineati} sono chiavi primarie.\newline
+Gli Attributi in \textbf{MAIUSCOLO} sono chiavi esterne.\newline
+Gli Attributi con * possono essere NULL
+\newline\newline
+\textbf{Utente}(\underline{Email}, Nome, Password, Genere, Autore)\newline\newline
+\textbf{Pagina}(\underline{ID\_Pagina}, Titolo, Nome\_autore, DataUltimaModifica, Data Creazione, \textbf{AUTORE})\newline
+\textit{Pagina.AUTORE} $\longmapsto$ \textit{Utente.Email}
+\newline\newline
+\textbf{Frase}(\underline{Posizione, \textbf{PAGINA}}, Testo, Link, \textbf{LINKPAGINA}*)
+\newline
+\textit{Frase.PAGINA} $\longmapsto$ \textit{pagina.ID\_pagina}
+\newline
+\textit{Frase.LINKPAGINA} $\longmapsto$ \textit{pagina.ID\_pagina}
+\newline\newline
+\textbf{Operazione Autore}(\underline{ID\_Operazione}, Data, Testo, PosizioneIns*, Modifica, link, link\_pagina*, \textbf{FRASE}, \textbf{AUTORE})\newline
+\textit{Operazione Utente.FRASE} $\longmapsto$ \textit{Frase.(Posizione,PAGINA)}\newline
+\textit{Operazione Autore.AUTORE} $\longmapsto$ \textit{Utente.Email}
+\newline\newline
+\textbf{Operazione Utente}(\underline{ID\_Operazione}, DataA*, DataR, Testo, PosizioneIns*, link, link\_pagina*, Accettata, Visionata, Modifica, \textbf{FRASE}, \textbf{UTENTE}, \textbf{AUTORE\_NOTIFICATO})\newline
+\textit{Operazione Utente.FRASE} $\longmapsto$ \textit{Frase.(Posizione*,PAGINA)}\newline
+\textit{Operazione Utente.UTENTE} $\longmapsto$ \textit{Utente.Email}
+\newline
+\textit{Operazione Utente.AUTORE\_NOTIFICATO} $\longmapsto$ \textit{Utente.Email}
+\newpage

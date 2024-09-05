@@ -1,0 +1,28 @@
+CREATE OR REPLACE FUNCTION Aggiornamento_Generalita_Pagina()
+RETURNS TRIGGER
+AS $Aggiornamento_Generalita_Pagina$
+DECLARE
+    generalita VARCHAR (41);
+    cur CURSOR FOR SELECT id_pagina FROM PAGINA WHERE emailautore=NEW.email;
+	idPagina INTEGER;
+BEGIN
+    
+    generalita := NEW.Nome || ';' || NEW.Cognome;
+    OPEN cur;
+	LOOP
+		FETCH cur INTO idPagina;
+        EXIT WHEN NOT FOUND;
+        UPDATE PAGINA SET generalita_autore=generalita WHERE id_pagina = idPagina;
+		
+    END LOOP;
+    CLOSE cur;
+    
+    RETURN NEW;
+END;
+$Aggiornamento_Generalita_Pagina$ LANGUAGE plpgsql;
+
+CREATE TRIGGER Aggiornamento_Generalita_Pagina
+AFTER UPDATE OF nome, cognome ON Utente
+FOR EACH ROW
+WHEN (NEW.autore=1::BIT(1))
+EXECUTE FUNCTION Aggiornamento_Generalita_Pagina();

@@ -1,0 +1,13 @@
+CREATE OR REPLACE FUNCTION Utente_No_Delete()
+RETURNS TRIGGER
+AS $Utente_No_Delete$
+BEGIN
+	RAISE EXCEPTION 'E06: Un utente non puo essere cancellato';
+	RETURN NEW;
+END;
+$Utente_No_Delete$ LANGUAGE plpgsql;
+
+CREATE TRIGGER Utente_No_delete
+BEFORE DELETE ON Utente
+FOR EACH ROW
+EXECUTE FUNCTION Utente_No_Delete();

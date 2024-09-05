@@ -1,0 +1,8 @@
+CREATE OR REPLACE VIEW Storicita_totale AS
+SELECT pagina_frase AS id_pagina, dataa AS Data_Accettazione, datar AS Data_Richiesta, posizioneins AS posizione, testo, utente, accettata, modifica, link, link_pagina FROM
+    (SELECT pagina_frase, null::TIMESTAMP AS dataa, datar, posizioneins, testo, utente, accettata, modifica, link, link_pagina FROM operazione_utente WHERE dataa IS NULL)
+    UNION
+    (SELECT pagina_frase, dataa, datar, posizioneins, testo, utente, accettata, modifica, link, link_pagina FROM operazione_utente WHERE dataa IS NOT NULL)    
+    UNION
+    (SELECT pagina_frase, data AS dataa, NULL AS datar, posizioneins, testo, autore AS utente, NULL AS accettata, NULL AS modifica, link, link_pagina FROM operazione_autore)    
+ORDER BY id_pagina, Data_Accettazione ASC;

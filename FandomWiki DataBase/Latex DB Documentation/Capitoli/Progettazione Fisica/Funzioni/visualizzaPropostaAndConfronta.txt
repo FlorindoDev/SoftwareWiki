@@ -1,0 +1,55 @@
+CREATE OR REPLACE FUNCTION visualizzaPropostaAndConfronta (idOp IN INTEGER, emailAutore IN VARCHAR(255) )
+RETURNS TEXT
+AS $visualizzaProposta$
+DECLARE
+
+	confronto TEXT := '';
+	notifica_rec notifica%ROWTYPE;
+	frase_rec frase%ROWTYPE;
+	
+	NotificaLinkPagina INTEGER := 0;
+	FraseLinkPagina INTEGER := 0;
+	
+	FraseTitolo VARCHAR(255);
+	NotificaRefTitolo VARCHAR(255) := 'null' ;
+	FraseRefTitolo VARCHAR(255) := 'null' ;
+	
+BEGIN
+	
+	select * into notifica_rec from notifica where id_operazione = idOp; -- se esiste quella notifica
+	raise notice 'notifica rec %', notifica_rec;
+	if found then
+	
+		if emailAutore != (Select autore_notificato from notifica where id_operazione  = idop) then
+			raise exception 'l''autore inserito non e autorizzato a visualizzare questa notifica';
+		end if;
+		
+		CALL checkautore(emailAutore, notifica_rec.pagina_frase);
+			
+		update operazione_utente set visionata = 1::bit(1) where id_operazione = idOp; --aggiorno il visualizzato
+		
+		if notifica_rec.link_pagina is not null then NotificaLinkPagina := notifica_rec.link_pagina; select titolo into NotificaRefTitolo from pagina where id_pagina = notifica_rec.link_pagina; end if;
+		
+		select titolo into FraseTitolo from pagina where id_pagina = notifica_rec.pagina_frase;
+		
+		if notifica_rec.modifica = 1::bit(1) then
+			select * into frase_rec from frase where pagina = notifica_rec.pagina_frase AND posizione = notifica_rec.posizione_frase;
+			raise notice '%', frase_rec;
+			
+			if notifica_rec.link_pagina is not null then FraseLinkPagina := frase_rec.linkpagina; select titolo into FraseRefTitolo from pagina where id_pagina = notifica_rec.link_pagina;end if;
+            raise notice 'FraseRefTitolo: %', FraseRefTitolo;
+			confronto := FraseTitolo ||'+'||frase_rec.testo ||'-'|| frase_rec.posizione ||'-' || frase_rec.link || '-'|| FraseLinkPagina || '-' || FraseRefTitolo ||'|'|| notifica_rec.testo || '-' || notifica_rec.posizioneins || '-' || notifica_rec.link || '-' || NotificaLinkPagina || '-' || NotificaRefTitolo;
+		
+		else
+			confronto := FraseTitolo ||'+'||notifica_rec.testo || '-' || notifica_rec.posizioneins || '-' || notifica_rec.link || '-' || NotificaLinkPagina || '-' || NotificaRefTitolo;
+		end if;
+
+	else
+		raise exception 'non esisete una notifica con l''identificativo proposto';
+	end if;
+	raise notice 'confronto hh: %', confronto;
+
+	RETURN confronto;
+END;
+$visualizzaProposta$
+LANGUAGE plpgsql;

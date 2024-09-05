@@ -1,0 +1,51 @@
+\begin{enumerate}[label=\textbf{\arabic*.}]
+    \item '\textcolor{red}{E01}: Non esiste una proposta per $<$email-autore$>$ con id\_operazione $<$id-operazione$>$'\newline\newline
+    \textbf{Descrizione}: Eccezione lanciata dalla procedura AccettaProposta, quando l'autore tenta di accettare una proposta di operazione che non esiste oppure che non deve essere accettata da quell'autore.
+
+    \item '\textcolor{red}{E02}: Questo utente non e autore della pagina'\newline\newline
+    \textbf{Descrizione}: Eccezione lanciata dalla procedura CheckAutore, quando un utente-autore non è autore della pagina su cui si sta effettuando delle operazioni.
+    
+    \item '\textcolor{red}{E03}: Utente non trovato o utente non e autore'\newline\newline
+    \textbf{Descrizione}: Eccezione lanciata dalla procedura CheckAutore, quando si sta esaminando l'operazione da effettuare e risulta che l'utente-autore che sta effettuando l'operazione non esiste oppure non è un autore.
+    
+    \item '\textcolor{red}{E04}: La pagina non esiste (link non valido)'\newline\newline
+    \textbf{Descrizione}: Eccezione lanciata dalle procedure:
+    \begin{itemize}
+        \item InsertFraseAutore
+        \item OperazioneUtenteRichiesta
+    \end{itemize}
+    quando si sta esaminando l'operazione da effettuare e risulta che la pagina a cui il link fa riferimento non esiste.
+    
+    \item '\textcolor{red}{E05}: Utente non trovato'\newline\newline
+    \textbf{Descrizione}: Eccezione lanciata dalla procedura CreazionePagina, quando l'utente che sta creando la pagina non corrisponde ad un utente registrato nel database
+
+    \item '\textcolor{red}{E06}: utente non può essere cancellato'\newline\newline
+    \textbf{Descrizione}: Eccezione lanciata dal trigger Utente\_No\_Delete, quando si effettua una qualunque operazione di cancellazione di un utente
+    
+    \item '\textcolor{red}{E07}: La modifica e gia stata visionata'\newline\newline
+    \textbf{Descrizione}: Eccezione lanciata dal trigger Modifica\_proposta, quando un utente sta tentando di modificare una proposta di modifica, ma l'autore ha già visionato la proposta.
+
+    \item '\textcolor{red}{E08}:La frase non esiste'\newline\newline
+    \textbf{Descrizione}: Eccezione lanciata dalla procedura OperazioneUtenteRichiesta quando si tenta di proporre una modifica ad una frase che non esiste.
+
+    \item '\textcolor{red}{E09}:La pagina non esiste' \newline\newline
+    \textbf{Descrizione}: Eccezione lanciata dalle Procedure:
+    \begin{itemize}
+        \item OperazioneUtenteRichiesta
+        \item CheckAutore
+    \end{itemize}
+    quando si tenta di inserire/proporre una frase in una pagina che non esiste.
+
+    \item '\textcolor{red}{E10}: Utente non corretto' \newline\newline
+    \textbf{Descrizione}: Eccezione lanciata dalla procedura OperazioneUtenteRichiesta quando l'utente che sta effettuando l'operazione non esiste.
+
+    \item '\textcolor{red}{E11}: l''autore inserito non e autorizzato a visualizzare questa notifica'\newline\newline
+    \textbf{Descrizione}: Eccezione lanciata dalla funzione visualizzaPropostaAndConfronta quando l'autore che sta tentando di visualizzare le proposte di modifica non è lo stesso autore della pagina in cui è stata effettuata la proposta.
+
+    \item '\textcolor{red}{E12}: non esiste una notifica con l''identificativo proposto'\newline\newline
+    \textbf{Descrizione}: Eccezione lanciata dalla funzione visualizzaPropostaAndConfronta quando la posposta non esiste oppure l'operazione è già stata accettata/rifiutata.
+
+    \item '\textcolor{red}{E13}: utente non ha questa proposta' \newline\newline
+    \textbf{Descrizione}: Eccezione lanciata dalla procedura ModificaRichestaProposta quando si tenta di modificare una proposta di modifica ma la proposta non esiste oppure l'utente che sta tentando di modificare la proposta non è lo stesso utente che ha effettuato la proposta di modifica.
+
+\end{enumerate}

@@ -1,0 +1,15 @@
+set time zone 'Europe/Rome';
+
+CREATE OR REPLACE FUNCTION AggiornamentoDataMod() RETURNS TRIGGER 
+AS $Aggiornamento_data_mod$
+BEGIN
+    new.DataR = localtimestamp(0);
+    RETURN NEW;
+END;
+$Aggiornamento_data_mod$
+LANGUAGE plpgsql;
+
+CREATE OR REPLACE TRIGGER AggiornamentoDataMod
+BEFORE UPDATE OF testo ON operazione_utente 
+FOR EACH ROW
+EXECUTE FUNCTION AggiornamentoDataMod();

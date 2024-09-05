@@ -1,0 +1,14 @@
+CREATE OR REPLACE FUNCTION DeleteFraseOpUtente() RETURNS TRIGGER
+AS $DeleteFraseOpUtente$
+BEGIN
+
+	DELETE FROM operazione_utente WHERE pagina_frase=OLD.id_pagina AND posizione_frase is NULL;
+ 
+	RETURN NEW;
+END;
+$DeleteFraseOpUtente$ LANGUAGE PLPGSQL;
+
+CREATE OR REPLACE TRIGGER DeleteFraseOpUtente
+AFTER DELETE ON Pagina
+FOR EACH ROW
+EXECUTE FUNCTION DeleteFraseOpUtente();

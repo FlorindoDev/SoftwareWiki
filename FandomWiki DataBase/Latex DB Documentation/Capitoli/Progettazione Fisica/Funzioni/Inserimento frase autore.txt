@@ -1,0 +1,23 @@
+CREATE OR REPLACE PROCEDURE InsertFraseAutore(Id_pagina_in INTEGER, Emailautore VARCHAR(255), Testo TEXT, link BIT(1), titolo_pagina_link varchar(255), posizione INTEGER)
+as $InsertFraseAutore$
+DECLARE
+	idpagina_link INTEGER;
+BEGIN 
+	CALL CheckAutore(EmailAutore, id_pagina_in);
+	IF(link = 1::BIT(1)) then
+		SELECT id_pagina INTO idpagina_link FROM pagina where  titolo_pagina_link = pagina.titolo;
+		IF FOUND THEN
+			INSERT INTO frase VALUES (Id_pagina_in, posizione,Testo,link,idpagina_link);
+			
+		else
+			RAISE EXCEPTION 'E04: La pagina non esiste(link non valido)';
+			ROLLBACK;
+		END IF;
+	ELSE
+		INSERT INTO frase VALUES(Id_pagina_in, posizione,Testo,link,null);	
+	END IF;
+
+END;
+$InsertFraseAutore$ LANGUAGE plpgsql;
+
+

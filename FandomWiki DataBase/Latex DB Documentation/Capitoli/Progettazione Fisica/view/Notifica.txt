@@ -1,0 +1,5 @@
+CREATE OR REPLACE VIEW Notifica as
+SELECT id_operazione,datar,testo,accettata,visionata,posizioneins,modifica,link,link_pagina,posizione_frase,pagina_frase,utente,autore_notificato
+FROM operazione_utente
+WHERE dataa IS NULL
+ORDER BY datar, visionata ASC;

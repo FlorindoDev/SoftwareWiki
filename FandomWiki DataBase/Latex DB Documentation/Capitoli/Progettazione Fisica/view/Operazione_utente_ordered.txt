@@ -1,0 +1,2 @@
+CREATE OR REPLACE VIEW  Operazione_utente_ordered AS
+SELECT dataA as data,pagina_frase,testo,posizione_frase,link,link_pagina  from Operazione_utente where dataA IS NOT NULL order by pagina_frase,data ASC;

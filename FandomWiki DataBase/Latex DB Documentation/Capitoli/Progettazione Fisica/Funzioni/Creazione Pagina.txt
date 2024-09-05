@@ -1,0 +1,21 @@
+CREATE OR REPLACE PROCEDURE CreazionePagina(Titolo_in VARCHAR(255), Emailautore VARCHAR(255), Testo TEXT, link BIT(1), titolo_pagina_link varchar(255), posizione INTEGER)
+as $CreazionePagina$
+DECLARE
+	Nome VARCHAR(20);
+	Cognome VARCHAR(20);
+	Generalita VARCHAR(41);
+	id_page integer;
+BEGIN
+IF EXISTS(SELECT email FROM Utente where Emailautore = utente.email) THEN	
+		SELECT u.cognome , u.nome into Cognome, nome FROM Utente as u where Emailautore = u.email;
+		Generalita := nome || ';' || cognome;
+		INSERT INTO Pagina (Titolo, Generalita_Autore, DataUltimaModifica, DataCreazione, emailAutore) VALUES(Titolo_in, Generalita, localtimestamp(0), localtimestamp(0), Emailautore);
+		SELECT id_pagina into id_page FROM pagina where Titolo_in = pagina.titolo;
+		CALL InsertFraseAutore(id_page, Emailautore , Testo, link , titolo_pagina_link , posizione);
+else
+	RAISE EXCEPTION 'E05: Utente non trovato';
+	ROLLBACK;	
+END IF;
+END;
+$CreazionePagina$ LANGUAGE plpgsql;
+

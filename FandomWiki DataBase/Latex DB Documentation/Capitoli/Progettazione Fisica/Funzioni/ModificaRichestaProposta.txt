@@ -1,0 +1,13 @@
+CREATE OR REPLACE PROCEDURE ModificaRichestaProposta(Id_operazione_in INTEGER, Email_in VARCHAR(255), Testo_in TEXT) AS $ModificaRichestaProposta$
+BEGIN
+	
+	IF EXISTS(SELECT utente from operazione_utente where Email_in = utente and Id_operazione_in = id_operazione) THEN
+		UPDATE operazione_utente SET testo = Testo_in where id_operazione = id_operazione_in;
+	
+	ELSE
+		RAISE EXCEPTION 'E13: utente non ha questa proposta';
+
+	END IF;
+
+END;
+$ModificaRichestaProposta$ LANGUAGE PLPGSQL;

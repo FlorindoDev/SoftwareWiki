@@ -1,0 +1,17 @@
+CREATE OR REPLACE PROCEDURE UpadatePosition(posizione_in integer , pagina_in integer, caso BIT(1)) AS 
+$UpadatePosition$
+DECLARE
+	f frase%ROWTYPE;
+
+BEGIN
+IF caso = 1::BIT THEN
+	FOR f IN SELECT pagina,posizione FROM frase where pagina_in = pagina and posizione >= posizione_in order by posizione DESC LOOP
+		UPDATE frase set posizione = posizione + 200 where f.pagina = pagina and posizione = f.posizione;
+	END LOOP;
+ELSE
+	FOR f IN SELECT pagina,posizione FROM frase where pagina_in = pagina and posizione > posizione_in order by posizione DESC LOOP
+		UPDATE frase set posizione = posizione + 200 where f.pagina = pagina and posizione = f.posizione;
+	END LOOP;
+END IF;
+END;
+$UpadatePosition$ LANGUAGE PLPGSQL;

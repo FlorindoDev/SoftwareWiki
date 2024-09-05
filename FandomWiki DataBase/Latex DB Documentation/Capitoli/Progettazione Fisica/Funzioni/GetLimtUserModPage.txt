@@ -1,0 +1,26 @@
+CREATE OR REPLACE FUNCTION GetLimtUserModPage(Ids_page VARCHAR(255), emailIn VARCHAR(255)) RETURNS VARCHAR AS $GetLimtUserModPage$
+DECLARE
+	pos INTEGER := 0;
+	oldpos INTEGER := 1;
+	parola varchar(10000) := '';
+	commando varchar(10000) := 'SELECT distinct(utente) FROM operazione_utente where utente NOT LIKE ''' || emailIn || ''' AND (pagina_frase = ';
+	u operazione_utente.utente%TYPE;
+BEGIN
+	LOOP
+		pos := POSITION('+' IN SUBSTRING(Ids_page FROM oldpos));
+		EXIT WHEN pos = 0;
+		parola := SUBSTRING(Ids_page FROM oldpos FOR pos-1);
+		oldpos := oldpos + pos;
+		call CheckAutore(emailin,parola::INTEGER);
+		commando := commando || parola || ' OR pagina_frase = ';
+	END LOOP;
+	parola := SUBSTRING(Ids_page FROM oldpos);
+	commando := commando || parola || ');';
+	parola := '';
+	FOR u in EXECUTE commando LOOP
+		parola := parola || '+' || u;
+	END LOOP;
+	
+	RETURN parola;
+END;
+$GetLimtUserModPage$ LANGUAGE PLPGSQL;

@@ -1,0 +1,22 @@
+CREATE OR REPLACE PROCEDURE CheckAutore(EmailAutore_in VARCHAR(255), id_pagina_in INTEGER) AS 
+$CheckAutore$
+BEGIN
+IF EXISTS(SELECT id_pagina FROM pagina where id_pagina_in = pagina.id_pagina) THEN
+	IF EXISTS(SELECT email FROM Utente where EmailAutore_in = utente.email and Utente.autore = 1::BIT(1)) THEN
+		IF EXISTS(SELECT email from utente join pagina on pagina.emailautore = utente.email where EmailAutore_in like utente.email and id_pagina_in = pagina.id_pagina) THEN
+			RETURN;
+		ELSE
+			RAISE EXCEPTION 'E02: Questo utente non e autore della pagina';
+			ROLLBACK;		
+		END IF;
+	ELSE
+		RAISE EXCEPTION 'E03: Utente non trovato o utente non e autore';
+		ROLLBACK;		
+	END IF;
+ELSE
+	RAISE EXCEPTION 'E09: La pagina non esiste';
+	ROLLBACK;
+END IF;
+END;
+$CheckAutore$ LANGUAGE PLPGSQL;
+

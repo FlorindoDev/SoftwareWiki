@@ -1,0 +1,42 @@
+CREATE OR REPLACE FUNCTION PositionControll() RETURNS TRIGGER AS 
+$PositionControll$
+DECLARE
+	max_pos integer;
+	min_pos integer;
+	max_int_pos integer;
+
+BEGIN
+
+	SELECT MAX(posizione) into max_pos from frase where pagina = new.pagina;
+	IF NOT FOUND THEN
+		max_pos = 0;
+	END IF;
+
+	IF max_pos < new.posizione THEN
+		new.posizione = max_pos + 200;
+
+	ELSEIF max_pos >= new.posizione then
+
+		IF new.posizione = 1 THEN
+			CALL UpadatePosition(new.posizione,new.pagina,1::BIT(1));
+			RETURN NEW;
+		END IF;
+
+		SELECT MIN(posizione) into min_pos  from frase where pagina = new.pagina and new.posizione <= posizione;
+		SELECT MAX(posizione) into max_int_pos  from frase where pagina = new.pagina and new.posizione > posizione;
+		new.posizione := (min_pos + max_int_pos)/2;
+		IF EXISTS(SELECT posizione from frase where new.pagina = pagina and new.posizione = posizione) THEN
+
+			CALL UpadatePosition(new.posizione,new.pagina,0::BIT(1));
+			new.posizione := (min_pos + 100);
+		END IF;
+	END IF;	
+
+	RETURN NEW;
+END;
+$PositionControll$ LANGUAGE PLPGSQL;
+
+CREATE OR REPLACE TRIGGER PositionControll
+BEFORE INSERT ON Frase
+FOR EACH ROW
+EXECUTE FUNCTION PositionControll();

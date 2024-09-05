@@ -1,0 +1,69 @@
+% Definizione di una nuova colonna per gli attributi con testo allineato a sinistra
+%tabella associazioni
+\newcolumntype{L}{>{\raggedright\arraybackslash}p{5cm}}
+
+\begin{longtable}{|p{2.5cm}|p{6cm}|L|}
+
+\hline
+\textbf{Entità} & \textbf{Descrizione} & \textbf{Attributi} \\
+\hline
+
+\endfirsthead
+\multicolumn{3}{c}{} \\
+\hline
+\textbf{Entità} & \textbf{Descrizione} & \textbf{Attributi} \\
+\hline
+\endhead
+
+Utente & 
+\textit{Utente} generico del sistema che può 
+essere anche un autore di una pagina wiki &
+\textbf{Nome}(String): Nome dell'utente \newline
+\textbf{Cognome}(String): Cognome dell'utente \newline
+\textbf{Email}(string): Email dell'utente \newline
+\textbf{Password}(string): Password dell'utente \newline
+\textbf{Genere}(Char): genere dell'utente \newline
+\textbf{Autore}(Bit): Indica se l'utente è un autore (1) oppure un utente (0)\\
+
+\hline
+Pagina & L'entità pagina si riferisce alla \textit{pagina wiki} creata da un \textit{utente-autore} &
+\textbf{ID\_Pagina}(Int): Numero intero auto incrementato che identifica univocamente una pagina dalle altre \newline
+\textbf{Generalità autore}(String): Stringa composta dalle generalità  dell'autore della pagina \newline
+\textbf{Titolo}(String): Indica il titolo della pagina, inoltre il titolo identifica univocamente una pagina dalle altre \newline
+\textbf{Data ultima modifica}(Timestamp): Indica la data in cui è stata effettuata l'ultima modifica accettata sulla pagina 
+\textbf{Data Creazione}(Timestamp): Indica la data in cui è stata effettuata la creazione della pagina\\
+
+\hline
+Frase & Frase è un elemento essenziale della pagina, perché una o più frasi
+formano il testo della pagina &
+\textbf{Testo}(String): Indica il contenuto testuale della frase \newline
+\textbf{Posizione}(Int): Indica la posizione numerica all'interno della pagina \newline
+\textbf{link}(Bit): questo attributo specifica se la frase è un collegamento ad un altra pagina se il valore è 1, se invece è 0 allora vuol dire che Frase non è un link\\
+
+\hline
+Operazione utente& 
+Operazione utente è un entità \textit{Superclasse} che tiene traccia di tutte gli inserimenti e modifiche apportate, alle frasi di una pagina, dagli utenti, che esse siano accettate oppure no dall'autore della pagina &
+\textbf{ID\_operazione}(String): Attributo auto incrementato che identifica l'operazione univocamente dalle altre\newline
+\textbf{DataA}(Timestamp): Data in cui è stata accattata o rifiutata la modifica o inserimento dall'autore \newline
+\textbf{DataR}(Timestamp): Data in cui è stata proposta la modifica o inserimento \newline
+\textbf{Testo}(String): Contiene il testo inserito dall'utente \newline
+\textbf{Accettata}(Bit): Indica se l'operazione proposta è stata accettata (1), rifiutata (0), il valore è inizializzato a 0 quando la proposta non è stata ancora accettata\newline
+\textbf{Visionata}(Bit): Questo attributo indica se l'autore ha visionato (1) l'operazione oppure no (0) \newline
+\textbf{Posizione}(Int): Posizione numerica specificata dall'utente al momento dell'inserimento di una nuova frase \newline
+\textbf{Modifica}(Bit): Questo attributo indica se l'operazione è una modifica (1) oppure no (0)\newline
+\textbf{link}(Bit): Indica se l'operazione è effettuata su un link (1) oppure no (0)\newline
+\textbf{link\_pagina}(Int): Se l'operazione è effettuata su un link, questo attributo specifica a quale pagina la frase si riferisce\\
+
+\hline
+Operazione autore & 
+Operazione autore è un entità \textit{Superclasse} che tiene traccia di tutte gli inserimenti e modifiche apportate, alle frasi di una pagina da parte dell'autore &
+\textbf{ID\_operazione}(String): Attributo auto incrementato che identifica l'operazione univocamente dalle altre\newline
+\textbf{Data}(Timestamp): Data in cui è stata apportata la modifica o inserimento \newline
+\textbf{Testo}(String): Contiene il testo inserito dall'autore \newline
+\textbf{Posizione}(Int): Posizione numerica specificata dall'autore al momento dell'inserimento di una nuova frase \newline
+\textbf{Modifica}(Bit): Questo attributo indica se l'operazione è una modifica (1) oppure no (0)\newline
+\textbf{link}(Bit): Indica se l'operazione è effettuata su un link (1) oppure no (0)\newline
+\textbf{link\_pagina}(Int): Se l'operazione è effettuata su un link, questo attributo specifica a quale pagina la frase si riferisce\\
+
+\hline
+\end{longtable}

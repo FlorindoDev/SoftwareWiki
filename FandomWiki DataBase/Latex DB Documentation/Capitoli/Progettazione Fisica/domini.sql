@@ -1,0 +1,2 @@
+CREATE DOMAIN d_Email as VARCHAR(255) 
+CHECK(VALUE LIKE '_%@_%._%')
