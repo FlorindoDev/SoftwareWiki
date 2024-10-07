@@ -1,4 +1,4 @@
-# SoftwereWiki
+# SoftwareWiki
 # Italiano:
 Questo software è realizzato in Java ed è un progetto per due esami. Si suddivide in una parte DataBase e in una parte Object Oriented (Software Applicativo).
 
